@@ -2,18 +2,19 @@ import _ from "lodash";
 import { differenceInSeconds, parseISO } from "date-fns";
 import { Actual } from "./currentTrains";
 import TrainAnnouncement from "./TrainAnnouncement";
+import Locations from "./Locations";
 
-export function line1(train: Actual) {
+export function line1(train: Actual, locations: Locations) {
   const a = train.latest;
 
   if (!a) return "Aktuell information saknas";
 
   return `${id(a)} mot ${_.map(_.map(a.ToLocation, "LocationName"), (loc) =>
-    stationName(loc)
+    stationName(loc, locations)
   )} ${precision(a)}`;
 }
 
-export function line2(train: Actual) {
+export function line2(train: Actual, locations: Locations) {
   const a = train.latest;
 
   if (!a) return "line2";
@@ -23,7 +24,7 @@ export function line2(train: Actual) {
   )} kl ${a.TimeAtLocationWithSeconds.substring(11, 19)}`;
 
   function location(announcement: TrainAnnouncement) {
-    return stationName(announcement.LocationSignature);
+    return stationName(announcement.LocationSignature, locations);
   }
 }
 
@@ -31,8 +32,10 @@ function id(a: TrainAnnouncement) {
   return a.AdvertisedTrainIdent;
 }
 
-function stationName(locationSignature: string) {
-  return locationSignature;
+function stationName(locationSignature: string, locations: Locations) {
+  return locations[locationSignature]
+    ? locations[locationSignature].AdvertisedShortLocationName
+    : locationSignature;
 }
 
 function precision(a: TrainAnnouncement) {

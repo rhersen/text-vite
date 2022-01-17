@@ -4,9 +4,11 @@ import { line1, line2 } from "./formatLatestAnnouncement";
 import getColor from "./color";
 import { Actual } from "./currentTrains";
 import { differenceInSeconds, parseISO } from "date-fns";
+import Locations from "./Locations";
 
 export default function Branch(props: {
   trains: Actual[];
+  locations: Locations;
   position?: string;
   size: string;
 }) {
@@ -21,10 +23,10 @@ export default function Branch(props: {
     return (
       <div className="train" key={train.latest.AdvertisedTrainIdent}>
         <div className={className} style={{ color }}>
-          {line1(train)}
+          {line1(train, props.locations)}
         </div>
         <div className={className} style={{ color }}>
-          {line2(train)}
+          {line2(train, props.locations)}
         </div>
       </div>
     );

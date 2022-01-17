@@ -110,15 +110,30 @@ export default class App extends Component<{}, MyState> {
     return (
       <div>
         <div className="row">
-          <Branch key={"nw"} trains={grouped.nw} size="normal" />
-          <Branch key={"ne"} trains={grouped.ne} size="normal" />
+          <Branch
+            key={"nw"}
+            trains={grouped.nw}
+            size="normal"
+            locations={this.state.locations}
+          />
+          <Branch
+            key={"ne"}
+            trains={grouped.ne}
+            size="normal"
+            locations={this.state.locations}
+          />
         </div>
         <div className="mid-row">
           <span
             className={`${this.arrowClass("n")} arrow-up`}
             onClick={this.getCurrent("n")}
           />
-          <Branch key={"c"} trains={grouped.c} size="normal" />
+          <Branch
+            key={"c"}
+            trains={grouped.c}
+            size="normal"
+            locations={this.state.locations}
+          />
           <div className="right-col">
             <span
               className={`${this.arrowClass("s")} arrow-down`}
@@ -145,8 +160,18 @@ export default class App extends Component<{}, MyState> {
           </div>
         </div>
         <div className="row">
-          <Branch key={"sw"} trains={grouped.sw} size="normal" />
-          <Branch key={"se"} trains={grouped.se} size="normal" />
+          <Branch
+            key={"sw"}
+            trains={grouped.sw}
+            size="normal"
+            locations={this.state.locations}
+          />
+          <Branch
+            key={"se"}
+            trains={grouped.se}
+            size="normal"
+            locations={this.state.locations}
+          />
         </div>
       </div>
     );
