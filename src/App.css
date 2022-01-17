@@ -1,42 +1,86 @@
-.App {
-  text-align: center;
+.row {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.mid-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.right-col {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.stop {
+  background-color: red;
+  margin: 10px 0;
+  padding: 10px 0;
+  font-weight: bold;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.clicked {
+  fill: gray;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.loaded {
+  fill: hsl(240, 100%, 50%);
 }
 
-button {
-  font-size: calc(10px + 2vmin);
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 32px solid transparent;
+  border-right: 32px solid transparent;
+  border-bottom: 64px solid orange;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 32px solid transparent;
+  border-right: 32px solid transparent;
+  border-top: 64px solid orange;
+}
+
+.arrow-up.clicked {
+  border-bottom: 64px solid gray;
+}
+
+.arrow-up.loaded {
+  border-bottom: 64px solid hsl(240, 100%, 50%);
+}
+
+.arrow-down.clicked {
+  border-top: 64px solid gray;
+}
+
+.arrow-down.loaded {
+  border-top: 64px solid hsl(240, 100%, 50%);
+}
+
+div.branch {
+  font-family: Arial Narrow, Arial, sans-serif;
+  font-size: 14px;
+  width: 50%;
+  min-height: 160px;
+  background: #222222;
+  border: 0.3px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  white-space: nowrap;
+}
+
+div.new {
+  font-weight: bold;
+}
+
+div.train {
+  margin-left: 3px;
 }
