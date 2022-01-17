@@ -1,13 +1,15 @@
-// import locations from "./locations";
+import Locations from "./Locations";
 
-export function east(location: string): number {
-  // const geometry = locations(location);
-  // const e = geometry && geometry.east;
-  return /*e ||*/ 0;
+export function east(location: string, locations: Locations): number {
+  const match = /POINT \(([\d\\.]+) ([\d\\.]+)\)/.exec(
+      locations[location]?.Geometry?.WGS84
+  );
+  return match ? parseFloat(match[1]) : 0;
 }
 
-export function north(location: string): number {
-  // const geometry = locations(location);
-  // const n = geometry && geometry.north;
-  return /*n ||*/ 0;
+export function north(location: string, locations: Locations): number {
+  const match = /POINT \(([\d\\.]+) ([\d\\.]+)\)/.exec(
+    locations[location]?.Geometry?.WGS84
+  );
+  return match ? parseFloat(match[2]) : 0;
 }

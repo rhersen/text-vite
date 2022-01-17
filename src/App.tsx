@@ -6,8 +6,10 @@ import TrainAnnouncement from "./TrainAnnouncement";
 import currentTrains from "./currentTrains";
 import branchDivider from "./branchDivider";
 import Branch from "./Branch";
+import Locations from "./Locations";
 
 type MyState = {
+  locations: Locations;
   response: TrainAnnouncement[];
   msg: string;
   loaded: string;
@@ -18,6 +20,7 @@ type MyState = {
 
 export default class App extends Component<{}, MyState> {
   state: MyState = {
+    locations: {},
     response: [],
     msg: "",
     loaded: "",
@@ -25,6 +28,11 @@ export default class App extends Component<{}, MyState> {
     eventSource: null,
     eventSourceStarted: null,
   };
+
+  async componentDidMount() {
+    const response = await fetch("/.netlify/functions/locations");
+    this.setState({ locations: await response.json() });
+  }
 
   componentWillUnmount() {
     if (this.state.eventSource) {
@@ -40,7 +48,10 @@ export default class App extends Component<{}, MyState> {
         loaded: "",
       });
 
-      const since = formatISO(sub(new Date(), { minutes: 12 })).substr(0, 19);
+      const since = formatISO(sub(new Date(), { minutes: 12 })).substring(
+        0,
+        19
+      );
 
       fetch(
         `/.netlify/functions/announcements?direction=${direction}&since=${since}`
@@ -92,8 +103,8 @@ export default class App extends Component<{}, MyState> {
 
   render() {
     const grouped = _.groupBy(
-      currentTrains(this.state.response),
-      branchDivider
+      currentTrains(this.state.locations, this.state.response),
+      branchDivider(this.state.locations)
     );
 
     return (

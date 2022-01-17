@@ -1,6 +1,7 @@
 import _ from "lodash";
 import * as wgs from "./wgs";
 import TrainAnnouncement from "./TrainAnnouncement";
+import Locations from "./Locations";
 
 export type Actual = {
   latest: TrainAnnouncement | undefined;
@@ -8,6 +9,7 @@ export type Actual = {
 };
 
 export default function currentTrains(
+  locations: Locations,
   announcement: TrainAnnouncement[]
 ): Actual[] {
   const grouped = _.groupBy(announcement, "AdvertisedTrainIdent");
@@ -21,14 +23,16 @@ export default function currentTrains(
       latest: getLatest(trainAnnouncements),
       latestDeparture: getLatest(
         _.filter(trainAnnouncements, { ActivityType: "Avgang" })
-      )
+      ),
     };
   }
 
-  function getLatest(trainAnnouncements: TrainAnnouncement[]): TrainAnnouncement | undefined {
+  function getLatest(
+    trainAnnouncements: TrainAnnouncement[]
+  ): TrainAnnouncement | undefined {
     return getTrainAnnouncement(
-        _.maxBy(trainAnnouncements, "TimeAtLocationWithSeconds"),
-        trainAnnouncements
+      _.maxBy(trainAnnouncements, "TimeAtLocationWithSeconds"),
+      trainAnnouncements
     );
   }
 
@@ -55,7 +59,7 @@ export default function currentTrains(
       ? {
           ...trainAnnouncement,
           ProductInformation: found.ProductInformation,
-          ToLocation: found.ToLocation
+          ToLocation: found.ToLocation,
         }
       : trainAnnouncement;
   }
@@ -88,9 +92,9 @@ export default function currentTrains(
     return _.orderBy(
       obj,
       [
-        a => north(a.latest ? a.latest.LocationSignature : ""),
+        (a) => north(a.latest ? a.latest.LocationSignature : ""),
         "latest.ActivityType",
-        "latest.TimeAtLocation"
+        "latest.TimeAtLocation",
       ],
       ["desc", dir ? "asc" : "desc", dir ? "desc" : "asc"]
     );
@@ -100,10 +104,10 @@ export default function currentTrains(
     if (location === "Gdv") return between("Ngd", "Nyh");
     if (location === "Söc") return between("Söd", "Söu");
     if (location === "Gn") return between("Mö", "Ssä");
-    return wgs.north(location);
+    return wgs.north(location, locations);
   }
 
   function between(loc1: string, loc2: string): number {
-    return 0.5 * wgs.north(loc1) + 0.5 * wgs.north(loc2);
+    return 0.5 * wgs.north(loc1, locations) + 0.5 * wgs.north(loc2, locations);
   }
 }
