@@ -1,6 +1,5 @@
 import { Component } from "react";
 import _ from "lodash";
-import { differenceInSeconds, formatISO, sub } from "date-fns";
 import "./App.css";
 import TrainAnnouncement from "./TrainAnnouncement";
 import currentTrains from "./currentTrains";
@@ -48,57 +47,48 @@ export default class App extends Component<{}, MyState> {
         loaded: "",
       });
 
-      const since = formatISO(sub(new Date(), { minutes: 12 })).substring(
-        0,
-        19
-      );
+      let location: Record<string, string> = { Tu: "Tumba", Khä: "Kallhäll" };
 
-      fetch(
-        `/.netlify/functions/announcements?direction=${direction}&since=${since}`
-      )
+      function hhmm(AdvertisedTimeAtLocation: string) {
+        return AdvertisedTimeAtLocation.substring(11, 16);
+      }
+
+      fetch(`/.netlify/functions/announcements?direction=${direction}`)
         .then((response) => response.json())
         .then((json) => {
           const response: TrainAnnouncement[] = json.TrainAnnouncement;
-          this.setState({
-            response,
-            loaded: direction,
-            clicked: "",
-          });
-
-          if (json.INFO) {
-            if (this.state.eventSource) this.state.eventSource.close();
-            this.setState({
-              eventSource: this.getEventSource(json.INFO.SSEURL),
-              eventSourceStarted: new Date(),
-            });
-          }
+          console.log(
+            response
+              .filter(
+                ({ ProductInformation }) =>
+                  ProductInformation?.some(
+                    ({ Description }) => Description === "SL Pendeltåg"
+                  ) &&
+                  ProductInformation?.some(
+                    ({ Description }) => Description === "44"
+                  )
+              )
+              .map(
+                ({
+                  AdvertisedTimeAtLocation,
+                  TimeAtLocation,
+                  Canceled,
+                  LocationSignature,
+                }) => {
+                  let advertised = hhmm(AdvertisedTimeAtLocation);
+                  if (Canceled)
+                    return `${advertised} från ${location[LocationSignature]} är inställt`;
+                  if (TimeAtLocation) {
+                    return `${advertised} från ${
+                      location[LocationSignature]
+                    } gick ${hhmm(TimeAtLocation)}`;
+                  }
+                  return `${advertised} från ${location[LocationSignature]} ska gå som vanligt`;
+                }
+              )
+          );
         });
     };
-  }
-
-  private getEventSource(sseUrl: string): EventSource {
-    const eventSource = new EventSource(sseUrl);
-    eventSource.onmessage = (event) => {
-      const parsed = JSON.parse(event.data);
-      const trainAnnouncements = parsed.RESPONSE.RESULT[0].TrainAnnouncement;
-      this.setState((oldState: MyState) => {
-        const response = oldState.response.concat(trainAnnouncements);
-        const age = differenceInSeconds(
-          new Date(),
-          oldState.eventSourceStarted || new Date(0)
-        );
-        if (age > 600 && this.state.eventSource) {
-          this.state.eventSource.close();
-          return {
-            response,
-            eventSource: null,
-            eventSourceStarted: null,
-          } as MyState;
-        }
-        return { response } as MyState;
-      });
-    };
-    return eventSource;
   }
 
   render() {
