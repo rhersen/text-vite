@@ -94,30 +94,38 @@ export default class App extends Component<{}, MyState> {
           <div>
             {this.state.response.map(
               ({
+                AdvertisedTrainIdent,
                 AdvertisedTimeAtLocation,
                 TimeAtLocation,
                 Canceled,
                 LocationSignature,
+                ToLocation,
               }) => {
+                let toLocation = ToLocation.map(
+                  ({ LocationName }) => location[LocationName] || LocationName
+                );
                 let advertised = hhmm(AdvertisedTimeAtLocation);
                 if (Canceled)
                   return (
-                    <div>
-                      {advertised} från {location[LocationSignature]} är
+                    <div key={AdvertisedTrainIdent}>
+                      {AdvertisedTrainIdent} {advertised} från{" "}
+                      {location[LocationSignature]} till {toLocation} är
                       inställt
                     </div>
                   );
                 if (TimeAtLocation) {
                   return (
-                    <div>
-                      {advertised} från {location[LocationSignature]} gick{" "}
+                    <div key={AdvertisedTrainIdent}>
+                      {AdvertisedTrainIdent} {advertised} från{" "}
+                      {location[LocationSignature]} till {toLocation} gick{" "}
                       {hhmm(TimeAtLocation)}
                     </div>
                   );
                 }
                 return (
-                  <div>
-                    {advertised} från {location[LocationSignature]} ska gå som
+                  <div key={AdvertisedTrainIdent}>
+                    {AdvertisedTrainIdent} {advertised} från{" "}
+                    {location[LocationSignature]} till {toLocation} ska gå som
                     vanligt
                   </div>
                 );

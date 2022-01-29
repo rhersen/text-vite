@@ -45,15 +45,18 @@ function getBody({ direction }) {
             <LT name='AdvertisedTimeAtLocation' value='$dateadd(0.04:00:00)'/>
             <EQ name='ActivityType' value='Avgang'/>
             <OR>
-                <EQ name='LocationSignature' value='Tu'/>
-                <EQ name='LocationSignature' value='Khä'/>
+                <EQ name='LocationSignature' value='${
+                  direction === "n" ? "Khä" : "Tu"
+                }'/>
             </OR>
         </FILTER>
+        <INCLUDE>AdvertisedTrainIdent</INCLUDE>
         <INCLUDE>AdvertisedTimeAtLocation</INCLUDE>
         <INCLUDE>Canceled</INCLUDE>
         <INCLUDE>LocationSignature</INCLUDE>
         <INCLUDE>ProductInformation</INCLUDE>
         <INCLUDE>TimeAtLocation</INCLUDE>
+        <INCLUDE>ToLocation</INCLUDE>
     </QUERY>
 </REQUEST>
 `;
