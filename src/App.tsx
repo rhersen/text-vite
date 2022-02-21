@@ -58,7 +58,11 @@ export default class App extends Component<{}, MyState> {
                 ({ Description }) => Description === "44"
               )
           );
-          this.setState({ response });
+          this.setState({
+            response,
+            loaded: direction,
+            clicked: "",
+          });
           console.log(
             response.map(
               ({
