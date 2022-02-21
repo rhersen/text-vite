@@ -46,7 +46,7 @@ function getBody({ direction }) {
             <EQ name='ActivityType' value='Avgang'/>
             <OR>
                 <EQ name='LocationSignature' value='${
-                  direction === "n" ? "Khä" : "Tu"
+                  direction === "n" ? "Tu" : "Khä"
                 }'/>
             </OR>
         </FILTER>
