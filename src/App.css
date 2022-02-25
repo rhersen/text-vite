@@ -1,86 +1,70 @@
-.row {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-evenly;
+body {
+  font-family: sans-serif;
 }
-
-.mid-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+table {
+  margin-bottom: 1em;
+  border-collapse: collapse;
 }
-
-.right-col {
+div.tr {
+  display: flex;
+  flex-direction: row;
+}
+div.tr.tbody {
+  margin-left: 70px;
+}
+div.tc {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
-
-.stop {
+div.tc.station {
+  position: fixed;
+  background: #fff;
+}
+span.td {
+  border-left: thin solid;
+  border-right: thin solid;
+}
+span.td.ahead {
+  background-color: #d4dfed;
+}
+span.td.ontime {
+  background-color: #98fb98;
+}
+span.td.delay1 {
+  background-color: #ffffe0;
+}
+span.td.delay2 {
+  background-color: #ff0;
+}
+span.td.delay4 {
+  background-color: #e69500;
+  color: #fff;
+}
+span.td.delay8 {
   background-color: red;
-  margin: 10px 0;
-  padding: 10px 0;
-  font-weight: bold;
-  color: white;
+  color: #fff;
 }
-
-.clicked {
-  fill: gray;
+span.td.station {
+  width: 70px;
 }
-
-.loaded {
-  fill: hsl(240, 100%, 50%);
+span.td.Ankomst {
+  border-top: thin solid;
+  border-bottom: none;
 }
-
-.arrow-up {
-  width: 0;
-  height: 0;
-  border-left: 32px solid transparent;
-  border-right: 32px solid transparent;
-  border-bottom: 64px solid orange;
+span.td.Avgang {
+  border-top: none;
+  border-bottom: thin solid;
 }
-
-.arrow-down {
-  width: 0;
-  height: 0;
-  border-left: 32px solid transparent;
-  border-right: 32px solid transparent;
-  border-top: 64px solid orange;
+.actual,
+caption {
+  font-weight: 700;
 }
-
-.arrow-up.clicked {
-  border-bottom: 64px solid gray;
+div.west {
+  text-align: left;
 }
-
-.arrow-up.loaded {
-  border-bottom: 64px solid hsl(240, 100%, 50%);
+div.central {
+  text-align: center;
 }
-
-.arrow-down.clicked {
-  border-top: 64px solid gray;
-}
-
-.arrow-down.loaded {
-  border-top: 64px solid hsl(240, 100%, 50%);
-}
-
-div.branch {
-  font-family: Arial Narrow, Arial, sans-serif;
-  font-size: 14px;
-  width: 50%;
-  min-height: 160px;
-  background: #222222;
-  border: 0.3px solid red;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  white-space: nowrap;
-}
-
-div.new {
-  font-weight: bold;
-}
-
-div.train {
-  margin-left: 3px;
+div.east {
+  text-align: right;
 }

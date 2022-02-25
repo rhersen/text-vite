@@ -35,19 +35,27 @@ exports.handler = async function ({ queryStringParameters }) {
   }
 };
 
-function getBody({ direction }) {
+function getBody({ direction, locations, since, until }) {
   return `
 <REQUEST>
     <LOGIN authenticationkey='${process.env.TRAFIKVERKET_API_KEY}'/>
-    <QUERY sseurl='false' objecttype='TrainAnnouncement' schemaversion='1.6'>
+    <QUERY sseurl='true' objecttype='TrainAnnouncement' orderby='TimeAtLocationWithSeconds' schemaversion='1.6'>
         <FILTER>
-            <GT name='AdvertisedTimeAtLocation' value='$dateadd(-0.04:00:00)'/>
-            <LT name='AdvertisedTimeAtLocation' value='$dateadd(0.04:00:00)'/>
-            <EQ name='ActivityType' value='Avgang'/>
+         <AND>
+            <NE name='Canceled' value='true' />
+        <LIKE name='AdvertisedTrainIdent' value='/[${
+          direction === "n" ? "02468" : "13579"
+        }]$/' />
+            <IN name='LocationSignature' value='${locations}' />
             <OR>
-                <EQ name='LocationSignature' value='${
-                  direction === "n" ? "Khä" : "Tu"
-                }'/>
+             <AND>
+              <GT name='AdvertisedTimeAtLocation' value='${since}' />
+              <LT name='AdvertisedTimeAtLocation' value='${until}' />
+             </AND>
+             <AND>
+              <GT name='EstimatedTimeAtLocation' value='${since}' />
+              <LT name='EstimatedTimeAtLocation' value='${until}' />
+             </AND>
             </OR>
         </FILTER>
         <INCLUDE>AdvertisedTrainIdent</INCLUDE>
