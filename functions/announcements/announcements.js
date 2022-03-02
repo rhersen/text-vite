@@ -41,22 +41,21 @@ function getBody({ direction, locations, since, until }) {
     <LOGIN authenticationkey='${process.env.TRAFIKVERKET_API_KEY}'/>
     <QUERY sseurl='true' objecttype='TrainAnnouncement' orderby='TimeAtLocationWithSeconds' schemaversion='1.6'>
         <FILTER>
-         <AND>
-            <NE name='Canceled' value='true' />
-        <LIKE name='AdvertisedTrainIdent' value='/[${
-          direction === "n" ? "02468" : "13579"
-        }]$/' />
-            <IN name='LocationSignature' value='${locations}' />
-            <OR>
-             <AND>
-              <GT name='AdvertisedTimeAtLocation' value='${since}' />
-              <LT name='AdvertisedTimeAtLocation' value='${until}' />
-             </AND>
-             <AND>
-              <GT name='EstimatedTimeAtLocation' value='${since}' />
-              <LT name='EstimatedTimeAtLocation' value='${until}' />
-             </AND>
-            </OR>
+            <AND>
+                <NE name='Canceled' value='true' />
+                <LIKE name='AdvertisedTrainIdent' value='/[${ direction === "n" ? "02468" : "13579" }]$/' />
+                <IN name='LocationSignature' value='${locations}' />
+                <OR>
+                    <AND>
+                        <GT name='AdvertisedTimeAtLocation' value='${since}' />
+                        <LT name='AdvertisedTimeAtLocation' value='${until}' />
+                    </AND>
+                    <AND>
+                        <GT name='EstimatedTimeAtLocation' value='${since}' />
+                        <LT name='EstimatedTimeAtLocation' value='${until}' />
+                    </AND>
+                </OR>
+            </AND>
         </FILTER>
         <INCLUDE>AdvertisedTrainIdent</INCLUDE>
         <INCLUDE>AdvertisedTimeAtLocation</INCLUDE>
