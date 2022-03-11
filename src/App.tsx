@@ -96,8 +96,8 @@ export default class App extends Component<{}, MyState> {
 
   getTrains(branch: string, direction: string) {
     this.clearAnnouncements(branch, direction);
-    const since = formatISO(sub(new Date(), { minutes: 90 })).substr(0, 19);
-    const until = formatISO(add(new Date(), { minutes: 75 })).substr(0, 19);
+    const since = formatISO(sub(new Date(), { minutes: 90 })).substring(0, 19);
+    const until = formatISO(add(new Date(), { minutes: 75 })).substring(0, 19);
 
     fetch(
       `/.netlify/functions/announcements?direction=${direction}&locations=${location[branch]}&since=${since}&until=${until}`

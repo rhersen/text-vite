@@ -51,7 +51,7 @@ function f(s: string) {
     /T0(\d:\d\d):00/,
     /T0(\d:\d\d:\d\d)/,
     /T(\d\d:\d\d):00/,
-    /T(\d\d:\d\d:\d\d)/
+    /T(\d\d:\d\d:\d\d)/,
   ];
 
   for (let i = 0; i < regExp.length; i++)

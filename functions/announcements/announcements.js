@@ -57,13 +57,6 @@ function getBody({ direction, locations, since, until }) {
                 </OR>
             </AND>
         </FILTER>
-        <INCLUDE>AdvertisedTrainIdent</INCLUDE>
-        <INCLUDE>AdvertisedTimeAtLocation</INCLUDE>
-        <INCLUDE>Canceled</INCLUDE>
-        <INCLUDE>LocationSignature</INCLUDE>
-        <INCLUDE>ProductInformation</INCLUDE>
-        <INCLUDE>TimeAtLocation</INCLUDE>
-        <INCLUDE>ToLocation</INCLUDE>
     </QUERY>
 </REQUEST>
 `;
