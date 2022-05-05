@@ -48,7 +48,7 @@ export default class App extends Component<{}, MyState> {
         loaded: "",
       });
 
-      const since = formatISO(sub(new Date(), { minutes: 12 })).substring(
+      const since = formatISO(sub(new Date(), { minutes: 24 })).substring(
         0,
         19
       );
