@@ -74,6 +74,7 @@ export default function currentTrains(
   function hasArrivedAtDestination({ latest }: Actual): boolean {
     if (!latest) return false;
     if (latest.LocationSignature === "Söd") return true;
+    if (latest.LocationSignature === "Skby") return true;
     if (latest.ActivityType !== "Ankomst") return false;
     return (
       _.map(latest.ToLocation, "LocationName").join() ===
@@ -83,10 +84,7 @@ export default function currentTrains(
 
   function isPendel(train: Actual): boolean {
     if (!train.latest) return false;
-    return (
-      train.latest.ProductInformation &&
-      train.latest.ProductInformation.length === 2
-    );
+    return train.latest.ToLocation && train.latest.ToLocation.length > 0;
   }
 
   function sortTrains(obj: Actual[], dir: boolean): Actual[] {

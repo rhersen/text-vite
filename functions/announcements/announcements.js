@@ -41,8 +41,13 @@ function getBody({ direction, since }) {
   <LOGIN authenticationkey='${process.env.TRAFIKVERKET_API_KEY}' />
     <QUERY sseurl='true' objecttype='TrainAnnouncement' orderby='TimeAtLocationWithSeconds' schemaversion='1.6'>
       <FILTER>
-        <IN name='LocationSignature' value='Äs,Åbe,Sst,Sci,Sod,Tmö,So,Kmy,Udl,Hel,Sol,Hgv,Nvk,R,Upv,Skby,Rs,Bra,Mr,Söd,Öte,Rön,Gau,Södy,Tu,Uts,Tul,Flb,Hu,Sta,Hfa,Ts,Kda,Vhe,Jbo,Hnd,Vga,Skg,Tåd,Fas,Hön,Huv,Sub,Duo,Spå,Bkb,Jkb,Khä' />
-        <EQ name='ProductInformation.Code' value='PNA054' />
+        <OR>
+          <AND>
+            <IN name='LocationSignature' value='Äs,Åbe,Sst,Sci,Sod,So,Udl,Hel,Sol,Hgv,Nvk,R,Upv,Rs,Mr,Söd,Öte,Rön,Tu,Tul,Flb,Hu,Sta,Nyc,Gdv,Ngd,Öso,Ss,Hfa,Ts,Kda,Vhe,Jbo,Hnd,Vga,Skg,Tåd,Fas,Sub,Spå,Bkb,Jkb,Khä' />
+            <EQ name='ProductInformation.Code' value='PNA054' />
+          </AND>
+          <IN name='LocationSignature' value='Tmö,Kmy,Skby,Bra,Gau,Södy,Uts,Kng,Hön,Huv,Duo' />
+        </OR>
         <LIKE name='AdvertisedTrainIdent' value='/[${
           direction === "n" ? "02468" : "13579"
         }]$/' />
