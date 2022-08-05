@@ -75,6 +75,7 @@ export default function currentTrains(
     if (!latest) return false;
     if (latest.LocationSignature === "Söd") return true;
     if (latest.LocationSignature === "Skby") return true;
+    if (latest.LocationSignature === "Khä") return true;
     if (latest.ActivityType !== "Ankomst") return false;
     return (
       _.map(latest.ToLocation, "LocationName").join() ===
