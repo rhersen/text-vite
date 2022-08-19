@@ -42,7 +42,7 @@ export default class App extends Component<{}, MyState> {
   }
 
   getCurrent(direction: string) {
-    return () => {
+    return async () => {
       this.setState({
         clicked: direction,
         loaded: "",
@@ -53,26 +53,25 @@ export default class App extends Component<{}, MyState> {
         19
       );
 
-      fetch(
+      const fetched = await fetch(
         `/.netlify/functions/announcements?direction=${direction}&since=${since}`
-      )
-        .then((response) => response.json())
-        .then((json) => {
-          const response: TrainAnnouncement[] = json.TrainAnnouncement;
-          this.setState({
-            response,
-            loaded: direction,
-            clicked: "",
-          });
+      );
+      console.log(fetched.ok);
+      const json = await fetched.json();
+      const response: TrainAnnouncement[] = json.TrainAnnouncement;
+      this.setState({
+        response,
+        loaded: direction,
+        clicked: "",
+      });
 
-          if (json.INFO) {
-            if (this.state.eventSource) this.state.eventSource.close();
-            this.setState({
-              eventSource: this.getEventSource(json.INFO.SSEURL),
-              eventSourceStarted: new Date(),
-            });
-          }
+      if (json.INFO) {
+        if (this.state.eventSource) this.state.eventSource.close();
+        this.setState({
+          eventSource: this.getEventSource(json.INFO.SSEURL),
+          eventSourceStarted: new Date(),
         });
+      }
     };
   }
 
