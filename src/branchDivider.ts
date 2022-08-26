@@ -6,26 +6,15 @@ export default (locations: Locations) =>
   (train: Actual): string => {
     if (!train.latest) return "";
     const location = train.latest.LocationSignature;
+    const east = wgs.east(location, locations);
     const north = wgs.north(location, locations);
     if (!north) return "";
 
-    return north > 59.354 ? n() : s();
-
-    function n() {
-      if (north > 59.64) return "ne";
-      if (north > 59.407) return `n${leftRight(17.84)}`;
-      return `n${leftRight(18.001)}`;
+    if (north < 59) return "se";
+    if (north > 59.5) {
+      if (east > 17) return "ne";
+      else return "nw";
     }
-
-    function s() {
-      if (north < 59.17) return `s${leftRight(17.84)}`;
-      if (north < 59.27) return `s${leftRight(18)}`;
-      return "c";
-    }
-
-    function leftRight(limit: number) {
-      const east = wgs.east(location, locations);
-      if (!east) return "";
-      return east < limit ? "w" : "e";
-    }
+    if (east < 17.6) return "sw";
+    return "c";
   };
